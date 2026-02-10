@@ -16,3 +16,5 @@ const addExp = async (email , password) => {
         return 1;
     }
 }
+
+export default addExp;
