@@ -70,9 +70,8 @@ const server = http.createServer(async function(req , res){
     
         else if(req.method === 'GET' && reqUrl.pathname === '/getExpense'){
             let userId = await getUserIdByToken(req.headers.cookie);
-            const result = await getExpense(userId);
-            console.log(result)
-            if(result === 1){
+            const result = await getExpense(userId[0].usr_id);
+            if(result[0].length === 1){
                 res.end('cannot fetch data');
                 return;
             }
