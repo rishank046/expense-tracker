@@ -12,7 +12,7 @@
 ### start local mySql server
 * on Linux
 ```
-sudo systemctl start mySql
+sudo systemctl start mysqld
 ```
 * on windows
 ### use XAMPP [download XAMPP](https://www.apachefriends.org/)
