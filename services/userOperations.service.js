@@ -1,5 +1,12 @@
 import db from "../db/database.connect.js";
 import crypto from "node:crypto";
+import {
+  CHECK_USER_CREATED,
+  GET_USER,
+  ADD_LOGIN_TOKEN,
+  CREATE_USER,
+  GET_USER_TOKEN,
+} from "../model/database.queries.js";
 
 export async function userLogIn(data) {
   const { email, password } = data;
@@ -10,31 +17,19 @@ export async function userLogIn(data) {
     throw error;
   }
 
-  const createLoginToken = `
-        INSERT INTO ${process.env.TOKEN_TABLE_NAME} (token , usr_id) VALUES (? , ?) 
-    `;
-  const [user] = await db.query(
-    `
-        SELECT * FROM ${process.env.USER_TABLE_NAME} WHERE usr_email = ? AND usr_pswd = ?`,
-    [email, password],
-  );
+  const [user] = await db.query(GET_USER, [email, password]);
 
   if (user.length === 0) {
     let error = new Error();
     error.code = "No_User_Found";
     throw error;
   } else {
-    const userId = user[0].usr_id;
-    const [userToken] = await db.query(
-      `
-            SELECT * FROM ${process.env.TOKEN_TABLE_NAME} WHERE usr_id = ?
-        `,
-      [userId],
-    );
+    const userId = user[0].userId;
+    const [userToken] = await db.query(GET_USER_TOKEN, [userId]);
 
     if (userToken.length === 0) {
       const token = crypto.randomBytes(10).toString("hex");
-      await db.query(createLoginToken, [token, userId]);
+      await db.query(ADD_LOGIN_TOKEN, [token, userId]);
       return token;
     } else {
       return userToken[0].token;
@@ -51,16 +46,10 @@ export async function userSignIn(data) {
     throw error;
   }
 
-  const [userRow] = await db.query(
-    `SELECT 1 FROM ${process.env.USER_TABLE_NAME} WHERE usr_email = ?`,
-    [email],
-  );
+  const [userRow] = await db.query(CHECK_USER_CREATED, [email]);
 
   if (userRow.length === 0) {
-    await db.query(
-      `INSERT INTO ${process.env.USER_TABLE_NAME} (usr_nm , usr_email , usr_pswd) VALUES (?, ?, ?)`,
-      [userName, email, password],
-    );
+    await db.query(CREATE_USER, [userName, email, password]);
   } else {
     let error = new Error();
     error.code = "User_Already_Exists";

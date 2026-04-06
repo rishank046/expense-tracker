@@ -82,5 +82,9 @@ export default function (error, res) {
     res.statusCode = errors[error.code].statusCode;
     res.end(errors[error.code].message);
     return;
+  } else {
+    res.statusCode = 500;
+    res.end(`${error}`);
+    return;
   }
 }

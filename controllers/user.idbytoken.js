@@ -19,7 +19,7 @@ async function getUserIdByToken(realCookie) {
     error.code = "No_Session_Id_Found";
     throw error;
   }
-  // find userId after verifying the token session_id
+
   return token;
 }
 

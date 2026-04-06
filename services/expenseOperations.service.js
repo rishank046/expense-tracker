@@ -1,28 +1,22 @@
 import db from "../db/database.connect.js";
+import {
+  ADD_EXPENSE,
+  GET_EXPENSE,
+  DELETE_EXPENSE,
+  UPDATE_EXPENSE,
+} from "../model/database.queries.js";
 
 export async function createExpense(data) {
-  const { amount, description, sessionId, categoryId } = data;
+  const { amount, description, token, categoryId } = data;
 
   // add expense to the database
-  await db.query(
-    `INSERT INTO ${process.env.EXPENSE_TABLE_NAME} (category_id , userId , amount , description) VALUES (? , (
-        SELECT userId FROM Token WHERE token = ? 
-    ) , ? , ?)`,
-    [categoryId, sessionId, amount, description],
-  );
+  await db.query(ADD_EXPENSE, [categoryId, token, amount, description]);
 }
 
 export async function getExpense(data) {
   const { token } = data;
 
-  let [row] = await db.query(
-    `SELECT e.expense_id , c.name AS categoryName , e.amount , e.description , e.created_at FROM ${process.env.EXPENSE_TABLE_NAME} AS e
-        JOIN Category AS c ON e.category_id = c.id
-        WHERE e.userId = (
-            SELECT userId FROM Token WHERE token = ?
-        )`,
-    [token],
-  );
+  let [row] = await db.query(GET_EXPENSE, [token]);
 
   if (!row || row.length == 0) {
     let error = new Error();
@@ -39,9 +33,7 @@ export async function deleteExpense(data) {
     error.code = "Missing_Required_Fields";
     throw error;
   }
-  const deleteExpense = `DELETE FROM ${process.env.EXPENSE_TABLE_NAME} WHERE expense_id = ?`;
-
-  db.query(deleteExpense, [data?.expenseId]);
+  db.query(DELETE_EXPENSE, [data?.expenseId]);
 }
 
 export async function updateExpense(data) {
@@ -50,9 +42,6 @@ export async function updateExpense(data) {
     error.code = "Missing_Required_Fields";
     throw error;
   } else {
-    db.query(
-      `DELETE FROM ${process.env.EXPENSE_TABLE_NAME} WHERE expenseId = ?`,
-      [data?.expense_id],
-    );
+    db.query(UPDATE_EXPENSE, [data?.expense_id]);
   }
 }
