@@ -6,7 +6,7 @@ import route from "./routes/routes.js";
 const server = http.createServer(async function (req, res) {
   const pathname = req.url;
   const method = req.method;
-  route(pathname, method, req, res);
+  await route(pathname, method, req, res);
 });
 
 initDB().then(() => {

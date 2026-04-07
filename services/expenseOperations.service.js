@@ -33,7 +33,7 @@ export async function deleteExpense(data) {
     error.code = "Missing_Required_Fields";
     throw error;
   }
-  db.query(DELETE_EXPENSE, [data?.expenseId]);
+  await db.query(DELETE_EXPENSE, [data?.expenseId]);
 }
 
 export async function updateExpense(data) {
@@ -42,6 +42,6 @@ export async function updateExpense(data) {
     error.code = "Missing_Required_Fields";
     throw error;
   } else {
-    db.query(UPDATE_EXPENSE, [data?.expense_id]);
+    await db.query(UPDATE_EXPENSE, [data?.expense_id]);
   }
 }
