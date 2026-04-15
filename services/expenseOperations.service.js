@@ -48,13 +48,18 @@ export async function updateExpense(data) {
 }
 
 export async function getSummary(data) {
-  if (!data?.startDate || !data?.endDate || !data?.userId) {
+  if (!data?.startDate || !data?.endDate) {
     let error = new Error();
     error.code = "Missing_Required_Fields";
     throw error;
   }
-  let summary = await db.query(GET_SUMMARY, [
-    data.userId,
+  if (!data?.token) {
+    let error = new Error();
+    error.code = "Unauthorized";
+    throw error;
+  }
+  let [summary] = await db.query(GET_SUMMARY, [
+    data.token,
     data.startDate,
     data.endDate,
   ]);
