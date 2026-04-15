@@ -28,3 +28,7 @@ export const GET_SUMMARY = `
 SELECT MIN(created_at) AS startDate , MAX(created_at) AS endDate , SUM(amount) AS totalExpense FROM Expenses WHERE userId = (
 SELECT 1 FROM Token WHERE token = ?)
 && created_at > ? && created_at < ?;`;
+
+export const INSERT_USER_PROFILE = `
+    INSERT INTO  userProfile (userId , salary , minimum_expense , expense_goal) VALUES (? , ? , ? , ?);
+`;

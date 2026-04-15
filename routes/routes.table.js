@@ -6,6 +6,7 @@ import register from "../controllers/user.signin.js";
 import deleteExpense from "../controllers/expense.delete.js";
 import updateExpense from "../controllers/expense.update.js";
 import getSummary from "../controllers/expense.getSummary.js";
+import setupProfile from "../controllers/user.setupProfile.js";
 
 const routesObj = {
   GET: {
@@ -19,6 +20,7 @@ const routesObj = {
     "/register": register,
     "/deleteExpense": deleteExpense,
     "/updateExpense": updateExpense,
+    "/setupProfile": setupProfile,
   },
   HEAD: {},
   PATCH: {},

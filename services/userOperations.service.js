@@ -6,6 +6,7 @@ import {
   ADD_LOGIN_TOKEN,
   CREATE_USER,
   GET_USER_TOKEN,
+  INSERT_USER_PROFILE,
 } from "../model/database.queries.js";
 
 export async function userLogIn(data) {
@@ -55,4 +56,14 @@ export async function userSignIn(data) {
     error.code = "User_Already_Exists";
     throw error;
   }
+}
+
+export async function setupProfile(data) {
+  const { userId, salary, minimumExpense, expenseGoal } = data;
+  if (!userId || !salary || !minimumExpense || !expenseGoal) {
+    let error = new Error();
+    error.code = "Missing_Required_Fields";
+    throw error;
+  }
+  db.query(INSERT_USER_PROFILE, [userId, salary, minimumExpense, expenseGoal]);
 }
