@@ -1,8 +1,7 @@
 export const CREATE_USER =
   "INSERT INTO User (userName, userEmail, userPassword) VALUES (?, ?, ?)";
 
-export const GET_USER =
-  "SELECT * FROM User WHERE userEmail = ? AND userPassword = ?";
+export const GET_USER = "SELECT * FROM User WHERE userEmail = ?";
 export const CHECK_USER_CREATED = "SELECT * FROM User WHERE userEmail = ?";
 
 export const ADD_EXPENSE =
@@ -22,7 +21,11 @@ export const UPDATE_EXPENSE = "UPDATE Expenses SET ? = ? WHERE expenseId = ?";
 export const ADD_LOGIN_TOKEN =
   "INSERT INTO Token (token, userId) VALUES (?, ?)";
 
-export const GET_USER_TOKEN = "SELECT * FROM Token WHERE userId = ?";
+export const GET_USER_TOKEN = `
+SELECT token, TIMESTAMPDIFF(HOUR, created_at, CURRENT_TIMESTAMP) AS hours_elapsed 
+FROM Token 
+WHERE userId = ?
+`;
 
 export const GET_SUMMARY = `
 SELECT MIN(created_at) AS startDate , MAX(created_at) AS endDate , SUM(amount) AS totalExpense FROM Expenses WHERE userId = (
@@ -34,9 +37,4 @@ export const INSERT_USER_PROFILE = `
 `;
 export const DELETE_TOKEN = `
     DELETE FROM Token WHERE token = ?;
-`;
-export const VERIFY_TOKEN_EXPIRY = `
-    SELECT TIMESTAMPDIFF(hour , (
-    SELECT created_at FROM Token WHERE token = ?
-    ) , CURRENT_TIMESTAMP);
 `;
