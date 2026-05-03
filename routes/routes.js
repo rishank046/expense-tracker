@@ -20,6 +20,7 @@ export default async (pathname, method, req, res) => {
     return;
   }
   if (handle?.[method]?.[pathname]) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     handle[method][pathname](req, res);
   } else {
     res.statusCode = 404;
