@@ -19,12 +19,6 @@ export async function getExpense(data) {
 
   let [row] = await db.query(GET_EXPENSE, [token]);
 
-  if (!row || row.length == 0) {
-    let error = new Error();
-    error.code = "No_Expense_Found";
-    throw error;
-  }
-
   return row;
 }
 
