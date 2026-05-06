@@ -1,26 +1,20 @@
-import addExpense from "../controllers/user.addexpense.js";
-import getExpense from "../controllers/user.getexpense.js";
 import filterExpenseByAmount from "../controllers/expense.filterbyamount.js";
-import logIn from "../controllers/user.login.js";
-import register from "../controllers/user.signin.js";
-import deleteExpense from "../controllers/expense.delete.js";
-import updateExpense from "../controllers/expense.update.js";
-import getSummary from "../controllers/expense.getSummary.js";
-import setupProfile from "../controllers/user.setupProfile.js";
+import userController from "../controllers/user.controller.js";
+import expenseController from "../controllers/expense.controller.js";
 
 const routesObj = {
   GET: {
-    "/getExpense": getExpense,
+    "/getExpense": expenseController,
     "/filterExpense": filterExpenseByAmount,
-    "/getSummary": getSummary,
+    "/getSummary": expenseController,
   },
   POST: {
-    "/addExpense": addExpense,
-    "/logIn": logIn,
-    "/register": register,
-    "/deleteExpense": deleteExpense,
-    "/updateExpense": updateExpense,
-    "/setupProfile": setupProfile,
+    "/addExpense": expenseController,
+    "/logIn": userController,
+    "/register": userController,
+    "/deleteExpense": expenseController,
+    "/updateExpense": expenseController,
+    "/setupProfile": userController,
   },
   HEAD: {},
   PATCH: {},

@@ -5,11 +5,4 @@ import getUserIdByToken from "./user.idbytoken.js";
 
 export default catchWrapper(async (req, res) => {
   const data = await parseBody(req);
-  const token = await getUserIdByToken(req.headers.cookie);
-  data.token = token;
-
-  await createExpense(data);
-
-  res.statusCode = 200;
-  res.end();
 });

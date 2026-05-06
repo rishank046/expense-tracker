@@ -32,7 +32,7 @@ const init = async () => {
     await db.query(`
     CREATE TABLE IF NOT EXISTS ${process.env.EXPENSE_TABLE_NAME} (
         expense_id INT AUTO_INCREMENT PRIMARY KEY, 
-        category_id INT,
+        category_id INT NOT NULL,
         userId INT NOT NULL,
         amount INT CHECK(amount > 0) NOT NULL, 
         description VARCHAR(200),
