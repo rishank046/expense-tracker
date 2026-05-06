@@ -1,7 +1,8 @@
 import * as userServices from "../services/userOperations.service.js";
 import parseBody from "../utils/parseBody.js";
+import wrapper from "../utils/catchWrapper.js";
 
-export default async function (req, res) {
+export default wrapper(async function (req, res) {
   const body = await parseBody(req);
   const url = req.url;
   switch (url) {
@@ -33,4 +34,4 @@ export default async function (req, res) {
       res.end();
       return;
   }
-}
+});

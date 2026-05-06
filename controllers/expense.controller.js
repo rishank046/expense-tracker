@@ -1,8 +1,9 @@
 import * as expenseOperations from "../services/expenseOperations.service.js";
 import parseBody from "../utils/parseBody.js";
 import idByToken from "../controllers/user.idbytoken.js";
+import wrapper from "../utils/catchWrapper.js";
 
-export default async function (req, res) {
+export default wrapper(async function (req, res) {
   let data = await parseBody(req);
   const url = req.url;
   const token = await idByToken(req.headers.cookie);
@@ -48,4 +49,4 @@ export default async function (req, res) {
       error.code = "NO_RESOURCE_FOUND";
       throw error;
   }
-}
+});
