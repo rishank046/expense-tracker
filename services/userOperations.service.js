@@ -14,12 +14,6 @@ import {
 export async function userLogIn(data) {
   const { email, password } = data;
 
-  if (!email || !password) {
-    let error = new Error();
-    error.code = "Missing_Required_Fields";
-    throw error;
-  }
-
   const [user] = await db.query(GET_USER, [email]);
   // new code
   // user does not exists in database
@@ -55,12 +49,6 @@ export async function userLogIn(data) {
 export async function userSignIn(data) {
   const { name, email } = data;
   let { password } = data;
-
-  if (!name || !email || !password) {
-    let error = new Error();
-    error.code = "Missing_Required_Fields";
-    throw error;
-  }
 
   const [userRow] = await db.query(CHECK_USER_CREATED, [email]);
 

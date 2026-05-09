@@ -8,6 +8,11 @@ export default wrapper(async function (req, res) {
   switch (url) {
     // case to handle login
     case "/logIn":
+      if (!body?.email || !body?.password) {
+        let error = new Error();
+        error.code = "Missing_Required_Fields";
+        throw error;
+      }
       const token = await userServices.userLogIn(body);
 
       res.writeHead(200, {
@@ -19,6 +24,12 @@ export default wrapper(async function (req, res) {
 
     // case to register function
     case "/register":
+      if (!body?.name || !body?.email || !body?.password) {
+        let error = new Error();
+        error.code = "Missing_Required_Fields";
+        throw error;
+      }
+
       await userSignIn(body);
 
       res.statusCode = 200;

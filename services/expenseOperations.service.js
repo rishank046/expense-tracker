@@ -23,35 +23,14 @@ export async function getExpense(data) {
 }
 
 export async function deleteExpense(data) {
-  if (!data || !data?.expenseId) {
-    let error = new Error();
-    error.code = "Missing_Required_Fields";
-    throw error;
-  }
   await db.query(DELETE_EXPENSE, [data?.expenseId]);
 }
 
 export async function updateExpense(data) {
-  if (!data?.expenseId || !data?.column || !data?.value) {
-    let error = new Error();
-    error.code = "Missing_Required_Fields";
-    throw error;
-  } else {
-    await db.query(UPDATE_EXPENSE, [data.column, data.value, data.expenseId]);
-  }
+  await db.query(UPDATE_EXPENSE, [data.column, data.value, data.expenseId]);
 }
 
 export async function getSummary(data) {
-  if (!data?.startDate || !data?.endDate) {
-    let error = new Error();
-    error.code = "Missing_Required_Fields";
-    throw error;
-  }
-  if (!data?.token) {
-    let error = new Error();
-    error.code = "Unauthorized";
-    throw error;
-  }
   let [summary] = await db.query(GET_SUMMARY, [
     data.token,
     data.startDate,
